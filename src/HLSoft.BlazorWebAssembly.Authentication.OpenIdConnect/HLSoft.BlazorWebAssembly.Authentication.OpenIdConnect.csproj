@@ -18,10 +18,9 @@
     <Compile Remove="node_modules\**" />
     <EmbeddedResource Remove="node_modules\**" />
     <None Remove="node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="copyJavascriptFiles.js" />
+	<Content Remove="package-lock.json" />
+	<Content Remove="package.json" />
+	<None Remove="copyJavascriptFiles.js" />
   </ItemGroup>
 
   <ItemGroup>
