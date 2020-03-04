@@ -1,5 +1,8 @@
 ﻿@page "/fetchdata"
 @inject HttpClient Http
+@using System.Net.Http.Headers
+@inject AuthenticationStateProvider authenticationStateProvider
+@attribute [Authorize]
 
 <h1>Weather forecast</h1>
 
@@ -39,7 +42,16 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            var token = authState.User.Claims.FirstOrDefault(x => x.Type == "access_token");
+            if (token != null)
+            {
+                Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
+                forecasts = await Http.GetJsonAsync<WeatherForecast[]>("http://localhost:5001/WeatherForecast");
+            }
+        }
     }
 
     public class WeatherForecast
@@ -50,6 +62,6 @@ else
 
         public string Summary { get; set; }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        public int TemperatureF { get; set; }
     }
 }
