@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Examples\Api\Api.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect", "src\HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect\HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect.csproj", "{4084E7D4-6F1C-46EC-94F6-BCC362BC07FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.GrantType.Code", "Examples\Client.GrantType.Code\Client.GrantType.Code.csproj", "{410DF4E2-330A-4304-9BE8-769777E0C393}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{4084E7D4-6F1C-46EC-94F6-BCC362BC07FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4084E7D4-6F1C-46EC-94F6-BCC362BC07FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4084E7D4-6F1C-46EC-94F6-BCC362BC07FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{410DF4E2-330A-4304-9BE8-769777E0C393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{410DF4E2-330A-4304-9BE8-769777E0C393}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{410DF4E2-330A-4304-9BE8-769777E0C393}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{410DF4E2-330A-4304-9BE8-769777E0C393}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F465DECD-7EBF-4AC2-A7F3-BF5710BE0BAA} = {2F56E931-05AF-4BE5-BA27-C6867D69AB0F}
 		{55C95F81-3C6E-4550-8D61-BD197C07133E} = {2F56E931-05AF-4BE5-BA27-C6867D69AB0F}
+		{410DF4E2-330A-4304-9BE8-769777E0C393} = {2F56E931-05AF-4BE5-BA27-C6867D69AB0F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9AF2427A-D1D9-41F2-9E2D-0363A55E0D21}
