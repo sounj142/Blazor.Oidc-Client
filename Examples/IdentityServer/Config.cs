@@ -165,6 +165,31 @@ namespace IdentityServer
                     }
                 },
 
+                new Client
+                {
+                    ClientId = "Client.Code.DefaultUri",
+                    ClientName = "Client With Grant Type Code using default callback Uris",
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireClientSecret = false,
+
+                    RedirectUris = {
+                        "http://localhost:5006/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/signin-callback-oidc.html",
+                        "http://localhost:5006/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/silent-callback-oidc.html",
+                        "http://localhost:5006/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/signin-popup-oidc.html",
+                    },
+                    PostLogoutRedirectUris = { "http://localhost:5006/" },
+                    AllowedCorsOrigins = { "http://localhost:5006" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "api"
+                    }
+                },
+
                 // implicit (e.g. SPA or OIDC authentication)
                 new Client
                 {
