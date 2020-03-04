@@ -30,9 +30,14 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninCallback);
 				return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 			}
-			else if (_navigationManager.Uri.StartsWith(_clientOptions.silent_redirect_uri, StringComparison.OrdinalIgnoreCase))
+			if (_navigationManager.Uri.StartsWith(_clientOptions.silent_redirect_uri, StringComparison.OrdinalIgnoreCase))
 			{
 				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSilentCallback);
+				return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+			}
+			if (_navigationManager.Uri.StartsWith(_clientOptions.popup_redirect_uri, StringComparison.OrdinalIgnoreCase))
+			{
+				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninPopup);
 				return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 			}
 

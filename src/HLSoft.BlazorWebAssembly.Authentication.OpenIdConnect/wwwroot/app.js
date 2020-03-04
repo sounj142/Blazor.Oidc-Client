@@ -91,6 +91,12 @@
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSigninPopup = function () {
 		var mgr = createUserManager();
-		mgr.signinPopupCallback();
+		mgr.signinPopupCallback().then(() => {
+			if (getParameterByName('error') && getParameterByName('state')) {
+				setTimeout(() => {
+					window.close();
+				});
+			}
+		});
 	}
 })();

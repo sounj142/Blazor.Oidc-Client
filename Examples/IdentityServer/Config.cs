@@ -140,6 +140,31 @@ namespace IdentityServer
                     AllowOfflineAccess = true,
                 },
 
+                new Client
+                {
+                    ClientId = "Client.Code",
+                    ClientName = "Client With Grant Type Code",
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireClientSecret = false,
+
+                    RedirectUris = {
+                        "http://localhost:5005/signin-popup-oidc",
+                        "http://localhost:5005/signin-callback-oidc",
+                        "http://localhost:5005/silent-callback-oidc",
+                    },
+                    PostLogoutRedirectUris = { "http://localhost:5005/" },
+                    AllowedCorsOrigins = { "http://localhost:5005" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "api"
+                    }
+                },
+
                 // implicit (e.g. SPA or OIDC authentication)
                 new Client
                 {

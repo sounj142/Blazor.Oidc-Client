@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect;
 
-namespace ClientGrantTypeCode
+namespace Client.Code
 {
 	public class Program
     {
@@ -24,8 +24,11 @@ namespace ClientGrantTypeCode
 				{
 					options.Authority = "http://localhost:5000/";
 
-					options.ClientId = "blazor.webassembly.js1";
+					options.ClientId = "Client.Code";
 					options.ResponseType = "code";
+
+					options.PopupRedirectUri = "/signin-popup-oidc";
+					options.SignedInCallbackUri = "/signin-callback-oidc";
 
 					options.Scope.Add("openid");
 					options.Scope.Add("profile");
