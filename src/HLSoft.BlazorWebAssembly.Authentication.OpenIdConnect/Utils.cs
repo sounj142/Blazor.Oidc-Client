@@ -21,7 +21,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				authority = authOption.Authority,
 				client_id = authOption.ClientId,
 				redirect_uri = GetAbsoluteUri(authOption.SignedInCallbackUri, navigationManager),
-				silent_redirect_uri = GetAbsoluteUri(authOption.SilentRedirecUri, navigationManager),
+				silent_redirect_uri = GetAbsoluteUri(authOption.SilentRedirectUri, navigationManager),
 				response_type = authOption.ResponseType,
 				scope = string.Join(" ", authOption.Scope.Distinct()),
 				post_logout_redirect_uri = GetAbsoluteUri(authOption.SignedOutRedirectUri, navigationManager),

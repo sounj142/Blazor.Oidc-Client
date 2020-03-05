@@ -16,6 +16,18 @@ namespace IdentityServer
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email(),
+                new IdentityResource
+                {
+                    Name = IdentityServerConstants.StandardScopes.Address,
+                    DisplayName = "Address",
+                    UserClaims = new [] { "address", "phone_number" }
+                },
+                new IdentityResource
+                {
+                    Name = "api_role",
+                    DisplayName = "Api Role",
+                    UserClaims = new [] { "api_role" }
+                }
             };
 
         public static IEnumerable<ApiResource> Apis =>
@@ -189,6 +201,44 @@ namespace IdentityServer
                         "api"
                     }
                 },
+
+                new Client
+                {
+                    ClientId = "Client.Code.Complex",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireConsent = false,
+                    RequirePkce = true,
+
+                    RedirectUris = {
+                        "http://localhost:5002/signin-popup-oidc",
+                        "http://localhost:5002/signin-callback-oidc",
+                        "http://localhost:5002/silent-callback-oidc",
+                    },
+                    PostLogoutRedirectUris = { "http://localhost:5002/" },
+                    AllowedCorsOrigins = { "http://localhost:5002" },
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Address,
+                        "api_role",
+                        "api",
+                    },
+                    AllowOfflineAccess = true,
+                    AccessTokenLifetime = 100,
+
+                    //AlwaysSendClientClaims = true,
+                    //AlwaysIncludeUserClaimsInIdToken = true,
+                    //, AllowAccessTokensViaBrowser = true
+                    //AccessTokenType = AccessTokenType.Jwt,
+                },
+
+
+
 
                 // implicit (e.g. SPA or OIDC authentication)
                 new Client
