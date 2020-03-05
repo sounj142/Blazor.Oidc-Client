@@ -20,29 +20,31 @@ namespace Client.Code.Complex
 
 		public static void ConfigureServices(IServiceCollection services)
 		{
-			services.AddAuthorizationCore(options => { })
-				//.AddBlazoredOpenIdConnect(options =>
-				.AddBlazoredOpenIdConnect<User, CustomClaimsParser>(options =>
-				{
-					options.Authority = "http://localhost:5000/";
+			services.AddAuthorizationCore(options => {
+				options.AddPolicy("edit:weather_forecast", policy => policy.RequireClaim("api_role ", "Admin"));
+			})
+			//.AddBlazoredOpenIdConnect(options => // switch to this line to use the default ClaimsParser
+			.AddBlazoredOpenIdConnect<User, CustomClaimsParser>(options =>
+			{
+				options.Authority = "http://localhost:5000/";
 
-					options.ClientId = "Client.Code.Complex";
-					options.ResponseType = "code";
+				options.ClientId = "Client.Code.Complex";
+				options.ResponseType = "code";
 
-					options.AutomaticSilentRenew = true;
+				options.AutomaticSilentRenew = true;
 
-					options.PopupRedirectUri = "/signin-popup-oidc";
-					options.SignedInCallbackUri = "/signin-callback-oidc";
-					options.SilentRedirectUri = "/silent-callback-oidc";
+				options.PopupRedirectUri = "/signin-popup-oidc";
+				options.SignedInCallbackUri = "/signin-callback-oidc";
+				options.SilentRedirectUri = "/silent-callback-oidc";
 
-					options.Scope.Add("openid");
-					options.Scope.Add("profile");
-					options.Scope.Add("email");
-					options.Scope.Add("address");
-					options.Scope.Add("api_role");
-					options.Scope.Add("api");
-					options.Scope.Add("offline_access");
-				});
+				options.Scope.Add("openid");
+				options.Scope.Add("profile");
+				options.Scope.Add("email");
+				options.Scope.Add("address");
+				options.Scope.Add("api_role");
+				options.Scope.Add("api");
+				options.Scope.Add("offline_access");
+			});
 		}
 	}
 }

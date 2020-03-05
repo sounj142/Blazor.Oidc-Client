@@ -11,7 +11,7 @@ namespace Api.Controllers
     [Authorize]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        private static readonly IList<string> Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
@@ -24,9 +24,19 @@ namespace Api.Controllers
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
+                Summary = Summaries[rng.Next(Summaries.Count)]
             })
             .ToArray();
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "edit:weather_forecast")]
+        public bool Add(string weatherName)
+        {
+            if (string.IsNullOrEmpty(weatherName))
+                return false;
+            Summaries.Add(weatherName);
+            return true;
         }
     }
 }

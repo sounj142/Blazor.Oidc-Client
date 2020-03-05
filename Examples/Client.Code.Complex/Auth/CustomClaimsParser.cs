@@ -39,7 +39,10 @@ namespace Client.Code.Complex.Auth
 		private void GenerateClaims(List<Claim> claims, Profile profile)
 		{
 			if (profile == null) return;
-			claims.AddRange(profile.api_role.Select(role => new Claim("api_role", role)));
+			if (profile.api_role != null)
+			{
+				claims.AddRange(profile.api_role.Select(role => new Claim("api_role", role)));
+			}
 			claims.Add(new Claim("email", profile.email));
 			claims.Add(new Claim("email_verified", profile.email_verified.ToString()));
 			claims.Add(new Claim("idp", profile.idp));
