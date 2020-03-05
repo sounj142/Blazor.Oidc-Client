@@ -29,8 +29,8 @@ namespace Client.Code.Complex
 						.RequireClaim("api_role", "Admin")
 						.Build());
 			})
-			//.AddBlazoredOpenIdConnect(options => // switch to this line to use the default ClaimsParser
-			.AddBlazoredOpenIdConnect<User, CustomClaimsParser>(options =>
+			//.AddBlazoredOpenIdConnect(options => // switch to this line to use default ClaimsParser
+			.AddBlazoredOpenIdConnect<User, CustomClaimsParser>(options => // note: don't use this config with External Google/IdentityServer, the User class is not compatible with claims from these source
 			{
 				options.Authority = "http://localhost:5000/";
 

@@ -26,13 +26,13 @@ namespace IdentityServer
             builder.AddDeveloperSigningCredential();
 
             services.AddAuthentication()
-                //.AddGoogle("Google", options =>
-                //{
-                //    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                .AddGoogle("Google", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-                //    options.ClientId = "<insert here>";
-                //    options.ClientSecret = "<insert here>";
-                //})
+                    options.ClientId = "755968899500-uqusb8afhcqopd3kjjomjiv6qnmtqgpq.apps.googleusercontent.com";
+                    options.ClientSecret = "znEh1SlF1_U58GXa0WKdM9FI";
+                })
                 .AddOpenIdConnect("oidc", "Demo IdentityServer", options =>
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
