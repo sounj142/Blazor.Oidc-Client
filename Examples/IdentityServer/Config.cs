@@ -33,7 +33,7 @@ namespace IdentityServer
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
-                new ApiResource("api", "My API")
+                new ApiResource("api", "Weather Forecast API", new[] { "api_role" })
             };
 
         public static IEnumerable<Client> Clients =>
@@ -230,7 +230,7 @@ namespace IdentityServer
                         "api",
                     },
                     AllowOfflineAccess = true,
-                    // when AccessTokenLifetime is a low value (maybe <= 50, I dont't sure). Oidc-client do the signin silent very often, it's so weird.
+                    // when AccessTokenLifetime is a low value (maybe <= 50, I'm not sure). Oidc-client do the signin silent very often, it's so weird.
                     AccessTokenLifetime = 100,
                 },
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect;
 using Client.Code.Complex.Auth;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Client.Code.Complex
 {
@@ -21,7 +22,12 @@ namespace Client.Code.Complex
 		public static void ConfigureServices(IServiceCollection services)
 		{
 			services.AddAuthorizationCore(options => {
-				options.AddPolicy("edit:weather_forecast", policy => policy.RequireClaim("api_role ", "Admin"));
+				options.AddPolicy(
+					Policies.CanManageWeatherForecast,
+					new AuthorizationPolicyBuilder()
+						.RequireAuthenticatedUser()
+						.RequireClaim("api_role", "Admin")
+						.Build());
 			})
 			//.AddBlazoredOpenIdConnect(options => // switch to this line to use the default ClaimsParser
 			.AddBlazoredOpenIdConnect<User, CustomClaimsParser>(options =>

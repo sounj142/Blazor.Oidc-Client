@@ -11,7 +11,7 @@ namespace Api.Controllers
     [Authorize]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly IList<string> Summaries = new[]
+        private static readonly IList<string> Summaries = new List<string>
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
@@ -29,13 +29,18 @@ namespace Api.Controllers
             .ToArray();
         }
 
+        public class AddWeatherForecastModel
+        {
+            public string WeatherName { get; set; }
+        }
+
         [HttpPost]
         [Authorize(Policy = "edit:weather_forecast")]
-        public bool Add(string weatherName)
+        public bool Add([FromBody]AddWeatherForecastModel model)
         {
-            if (string.IsNullOrEmpty(weatherName))
+            if (string.IsNullOrEmpty(model.WeatherName))
                 return false;
-            Summaries.Add(weatherName);
+            Summaries.Add(model.WeatherName);
             return true;
         }
     }

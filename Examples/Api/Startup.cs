@@ -1,9 +1,13 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Api
 {
@@ -13,18 +17,29 @@ namespace Api
         {
             services.AddControllers();
 
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.Authority = "http://localhost:5000";
                     options.RequireHttpsMetadata = false;
                     
                     options.Audience = "api";
 
-                    // set these values to enforce authentication check whether token was expired
+                    // set these values to enforce authentication check whether access token was expired
                     options.TokenValidationParameters.ValidateLifetime = true;
                     options.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
                 });
+
+            services.AddAuthorization(authorizationOptions =>
+            {
+                authorizationOptions.AddPolicy(
+                    "edit:weather_forecast",
+                    new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .RequireClaim("api_role", "Admin")
+                        .Build()
+                );
+            });
 
             services.AddCors(options =>
             {

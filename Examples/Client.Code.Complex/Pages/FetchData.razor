@@ -6,7 +6,9 @@
 
 <h1>
     Weather forecast
-    <a class="btn btn-primary" href="/add-weather-forecast">Add New</a>
+    <AuthorizeView Policy="@Policies.CanManageWeatherForecast">
+        <a class="btn btn-primary" href="/add-weather-forecast">Add New</a>
+    </AuthorizeView>
 </h1>
 
 <p>This component demonstrates fetching data from the server.</p>
