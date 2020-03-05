@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
-	public class AuthenticationService : IAuthenticationService
+	internal class AuthenticationService : IAuthenticationService
 	{
 		private readonly IJSRuntime _jsRuntime;
 

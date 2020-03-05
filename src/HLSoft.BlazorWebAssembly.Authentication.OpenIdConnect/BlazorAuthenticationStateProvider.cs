@@ -25,19 +25,8 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 		{
-			if (_navigationManager.Uri.StartsWith(_clientOptions.redirect_uri, StringComparison.OrdinalIgnoreCase))
+			if (await HandleKnownUri())
 			{
-				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninCallback);
-				return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-			}
-			if (_navigationManager.Uri.StartsWith(_clientOptions.silent_redirect_uri, StringComparison.OrdinalIgnoreCase))
-			{
-				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSilentCallback);
-				return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-			}
-			if (_navigationManager.Uri.StartsWith(_clientOptions.popup_redirect_uri, StringComparison.OrdinalIgnoreCase))
-			{
-				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninPopup);
 				return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 			}
 
@@ -47,6 +36,26 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			var claims = ParseClaims(user);
 			return claims.Count == 0 ? new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()))
 				: new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(claims, "Bearer")));
+		}
+
+		private async Task<bool> HandleKnownUri()
+		{
+			if (_navigationManager.Uri.StartsWith(_clientOptions.redirect_uri, StringComparison.OrdinalIgnoreCase))
+			{
+				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninCallback);
+				return true;
+			}
+			if (_navigationManager.Uri.StartsWith(_clientOptions.silent_redirect_uri, StringComparison.OrdinalIgnoreCase))
+			{
+				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSilentCallback);
+				return true;
+			}
+			if (_navigationManager.Uri.StartsWith(_clientOptions.popup_redirect_uri, StringComparison.OrdinalIgnoreCase))
+			{
+				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninPopup);
+				return true;
+			}
+			return false;
 		}
 
 		private IList<Claim> ParseClaims(object claims)
