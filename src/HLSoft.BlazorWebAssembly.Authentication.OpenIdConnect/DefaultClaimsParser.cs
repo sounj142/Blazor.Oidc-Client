@@ -18,7 +18,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			var tokenType = claims.FirstOrDefault(s => s.Type == "token_type");
 			var claimsIdentity = claims.Count == 0
 				? new ClaimsIdentity()
-				: new ClaimsIdentity(claims, string.IsNullOrEmpty(tokenType.Value) ? "Bearer" : tokenType.Value);
+				: new ClaimsIdentity(claims, string.IsNullOrEmpty(tokenType?.Value) ? "Bearer" : tokenType.Value);
 			return claimsIdentity;
 		}
 

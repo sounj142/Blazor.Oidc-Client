@@ -14,14 +14,16 @@ namespace Client.Code.Complex.Auth
 		{
 			var claims = new List<Claim>();
 
-			AddClaims(claims, user);
-			AddClaims(claims, user?.profile);
-			AddClaims(claims, user?.profile?.address);
+			GenerateClaims(claims, user);
+			GenerateClaims(claims, user?.profile);
+			GenerateClaims(claims, user?.profile?.address);
 
-			return new ClaimsIdentity(claims, "Bearer");
+			return claims.Count == 0
+				? new ClaimsIdentity()
+				: new ClaimsIdentity(claims, "Bearer");
 		}
 
-		private void AddClaims(List<Claim> claims, User user)
+		private void GenerateClaims(List<Claim> claims, User user)
 		{
 			if (user == null) return;
 			claims.Add(new Claim("access_token", user.access_token));
@@ -30,10 +32,11 @@ namespace Client.Code.Complex.Auth
 			claims.Add(new Claim("refresh_token", user.refresh_token));
 			claims.Add(new Claim("session_state", user.session_state));
 			claims.Add(new Claim("token_type", user.token_type));
-			claims.AddRange(user.scopes.Select(scope => new Claim("scope", scope)));
+			claims.AddRange(user.scope.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+				.Select(scope => new Claim("scope", scope)));
 		}
 
-		private void AddClaims(List<Claim> claims, Profile profile)
+		private void GenerateClaims(List<Claim> claims, Profile profile)
 		{
 			if (profile == null) return;
 			claims.AddRange(profile.api_role.Select(role => new Claim("api_role", role)));
@@ -44,9 +47,12 @@ namespace Client.Code.Complex.Auth
 			claims.Add(new Claim("sid", profile.sid));
 			claims.Add(new Claim("sub", profile.sub));
 			claims.Add(new Claim("website", profile.website));
+
+			// add a special claim for User.Identity.Name
+			claims.Add(new Claim(ClaimTypes.Name, profile.name));
 		}
 
-		private void AddClaims(List<Claim> claims, Address address)
+		private void GenerateClaims(List<Claim> claims, Address address)
 		{
 			if (address == null) return;
 			claims.Add(new Claim("postal_code", address.postal_code.ToString()));
