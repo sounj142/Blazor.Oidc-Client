@@ -43,6 +43,9 @@
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.getUser = function () {
+		//var result = mgr.getUser();
+		//result.then(user => console.log(user));
+		//return result;
 		return mgr.getUser();
 	}
 

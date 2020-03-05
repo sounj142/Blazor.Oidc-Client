@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
+using System.Security.Principal;
 
 namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
-    public interface IClaimsParser<T>
+    public interface IClaimsParser<TUser> where TUser: class
     {
-        IList<Claim> ParseClaims(T claims);
+        IIdentity CreateIdentity(TUser userClaims);
     }
 }

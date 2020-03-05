@@ -12,18 +12,36 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
         public static IServiceCollection AddBlazoredOpenIdConnect(this IServiceCollection services,
             Action<OpenIdConnectOptions> configureOptions)
         {
+            return services
+                .AddCommonServices(configureOptions)
+                .AddScoped<AuthenticationStateProvider, BlazorAuthenticationStateProvider<object>>()
+                .AddScoped<IClaimsParser<object>, DefaultClaimsParser>();
+        }
+
+        public static IServiceCollection AddBlazoredOpenIdConnect<TUser, TClaimsParser>(this IServiceCollection services,
+            Action<OpenIdConnectOptions> configureOptions)
+            where TClaimsParser : class, IClaimsParser<TUser>
+            where TUser : class
+        {
+            return services
+                .AddCommonServices(configureOptions)
+                .AddScoped<AuthenticationStateProvider, BlazorAuthenticationStateProvider<TUser>>()
+                .AddScoped<IClaimsParser<TUser>, TClaimsParser>();
+        }
+
+        private static IServiceCollection AddCommonServices(this IServiceCollection services,
+            Action<OpenIdConnectOptions> configureOptions)
+        {
             services.Configure(configureOptions);
             services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<OpenIdConnectOptions>>().Value);
 
-            services.AddSingleton(resolver => {
+            services.AddSingleton(resolver =>
+            {
                 var authOptions = resolver.GetRequiredService<OpenIdConnectOptions>();
                 var navigationManager = resolver.GetRequiredService<NavigationManager>();
                 return Utils.CreateClientOptionsConfigData(authOptions, navigationManager);
             });
-
-            return services
-                .AddScoped<AuthenticationStateProvider, BlazorAuthenticationStateProvider>()
-                .AddScoped<IAuthenticationService, AuthenticationService>();
+            return services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
     }
 }

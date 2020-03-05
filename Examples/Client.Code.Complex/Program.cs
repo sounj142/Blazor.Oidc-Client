@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect;
+using Client.Code.Complex.Auth;
 
 namespace Client.Code.Complex
 {
@@ -20,7 +21,8 @@ namespace Client.Code.Complex
 		public static void ConfigureServices(IServiceCollection services)
 		{
 			services.AddAuthorizationCore(options => { })
-				.AddBlazoredOpenIdConnect(options =>
+				//.AddBlazoredOpenIdConnect(options =>
+				.AddBlazoredOpenIdConnect<User, CustomClaimsParser>(options =>
 				{
 					options.Authority = "http://localhost:5000/";
 

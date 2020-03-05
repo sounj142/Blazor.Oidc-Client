@@ -231,7 +231,7 @@ namespace IdentityServer
                     },
                     AllowOfflineAccess = true,
                     // when AccessTokenLifetime is a low value (maybe <= 50, I dont't sure). Oidc-client do the signin silent very often, it's so weird.
-                    AccessTokenLifetime = 100
+                    AccessTokenLifetime = 100,
                 },
 
                 // implicit (e.g. SPA or OIDC authentication)
