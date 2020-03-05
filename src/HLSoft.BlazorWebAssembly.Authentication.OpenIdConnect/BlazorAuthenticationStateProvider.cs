@@ -12,6 +12,8 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
 	public class BlazorAuthenticationStateProvider : AuthenticationStateProvider
 	{
+		private const int MAXIMUM_READ_CLAIM_LEVEL = 3;
+
 		private readonly IJSRuntime _jsRuntime;
 		private readonly ClientOptions _clientOptions;
 		private readonly NavigationManager _navigationManager;
@@ -34,6 +36,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 
 			var user = await _jsRuntime.InvokeAsync<object>(Constants.GetUser);
 			var claims = ParseClaims(user);
+			Console.WriteLine(user);
 			return claims.Count == 0 ? new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()))
 				: new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(claims, "Bearer")));
 		}
@@ -82,9 +85,13 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 					case JsonValueKind.Undefined:
 						break;
 					case JsonValueKind.Array:
+						if (level < MAXIMUM_READ_CLAIM_LEVEL)
+						{
+							ParseArrayClaims(item, claims);
+						}
 						break;
 					case JsonValueKind.Object:
-						if (level < 3)
+						if (level < MAXIMUM_READ_CLAIM_LEVEL)
 						{
 							ParseClaims(item.Value, claims, level + 1);
 						}
@@ -92,6 +99,18 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 					default:
 						claims.Add(new Claim(item.Name, item.Value.ToString()));
 						break;
+				}
+			}
+		}
+
+		private void ParseArrayClaims(JsonProperty jsonElem, IList<Claim> claims)
+		{
+			foreach (var item in jsonElem.Value.EnumerateArray())
+			{
+				if (item.ValueKind == JsonValueKind.False || item.ValueKind == JsonValueKind.Number
+					|| item.ValueKind == JsonValueKind.String || item.ValueKind == JsonValueKind.True)
+				{
+					claims.Add(new Claim(jsonElem.Name, item.ToString()));
 				}
 			}
 		}

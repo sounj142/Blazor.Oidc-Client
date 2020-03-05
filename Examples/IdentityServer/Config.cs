@@ -205,9 +205,10 @@ namespace IdentityServer
                 new Client
                 {
                     ClientId = "Client.Code.Complex",
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientName = "A more complex example with variety claims, custom ClaimParser, automatic renew, ect.",
 
                     AllowedGrantTypes = GrantTypes.Code,
+                    RequireClientSecret = false,
                     RequireConsent = false,
                     RequirePkce = true,
 
@@ -229,16 +230,9 @@ namespace IdentityServer
                         "api",
                     },
                     AllowOfflineAccess = true,
-                    AccessTokenLifetime = 100,
-
-                    //AlwaysSendClientClaims = true,
-                    //AlwaysIncludeUserClaimsInIdToken = true,
-                    //, AllowAccessTokensViaBrowser = true
-                    //AccessTokenType = AccessTokenType.Jwt,
+                    // when AccessTokenLifetime is a low value (maybe <= 50, I dont't sure). Oidc-client do the signin silent very often, it's so weird.
+                    AccessTokenLifetime = 100
                 },
-
-
-
 
                 // implicit (e.g. SPA or OIDC authentication)
                 new Client
