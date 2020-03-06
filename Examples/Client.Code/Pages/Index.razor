@@ -1,5 +1,6 @@
 ﻿@page "/"
 
+
 <h1>
 	Hello,
 	<AuthorizeView>
@@ -11,6 +12,15 @@
 	!
 </h1>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<AuthorizeView>
+	<Authorized>
+		<h2>Claims</h2>
+		@foreach (var claim in context.User.Claims)
+		{
+			<p>
+				<b>Type:</b> @claim.Type =>
+				<b>Value:</b> @claim.Value
+			</p>
+		}
+	</Authorized>
+</AuthorizeView>
