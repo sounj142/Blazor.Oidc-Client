@@ -27,11 +27,6 @@ namespace Client.Code
 					options.ClientId = "Client.Code";
 					options.ResponseType = "code";
 
-					options.PopupRedirectUri = "/signin-popup-oidc";
-					options.SignedInCallbackUri = "/signin-callback-oidc";
-					options.SilentRedirectUri = "/silent-callback-oidc";
-					options.PopupPostLogoutRedirectUri = "/signout-popup-oidc";
-
 					options.Scope.Add("openid");
 					options.Scope.Add("profile");
 					options.Scope.Add("api");

@@ -41,24 +41,29 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			return new AuthenticationState(new ClaimsPrincipal(claimsIdentity));
 		}
 
+		public void NotifyAuthenticationStateChanged()
+		{
+			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+		}
+
 		private async Task<bool> HandleKnownUri()
 		{
-			if (_navigationManager.Uri.StartsWith(_clientOptions.redirect_uri, StringComparison.OrdinalIgnoreCase))
+			if (CurrentUriIs(_clientOptions.redirect_uri))
 			{
 				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninCallback);
 				return true;
 			}
-			if (_navigationManager.Uri.StartsWith(_clientOptions.silent_redirect_uri, StringComparison.OrdinalIgnoreCase))
+			if (CurrentUriIs(_clientOptions.silent_redirect_uri))
 			{
 				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSilentCallback);
 				return true;
 			}
-			if (_navigationManager.Uri.StartsWith(_clientOptions.popup_redirect_uri, StringComparison.OrdinalIgnoreCase))
+			if (CurrentUriIs(_clientOptions.popup_redirect_uri))
 			{
 				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninPopup);
 				return true;
 			}
-			if (_navigationManager.Uri.StartsWith(_clientOptions.popup_post_logout_redirect_uri, StringComparison.OrdinalIgnoreCase))
+			if (CurrentUriIs(_clientOptions.popup_post_logout_redirect_uri))
 			{
 				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSignoutPopup);
 				return true;
@@ -66,9 +71,9 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			return false;
 		}
 
-		public void NotifyAuthenticationStateChanged()
+		private bool CurrentUriIs(string url)
 		{
-			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+			return !string.IsNullOrEmpty(url) && _navigationManager.Uri.StartsWith(url, StringComparison.OrdinalIgnoreCase);
 		}
 	}
 }

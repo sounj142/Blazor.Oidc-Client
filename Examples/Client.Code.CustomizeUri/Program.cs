@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect;
 
-namespace Client.Code.DefaultUri
+namespace Client.Code.CustomizeUri
 {
 	public class Program
     {
@@ -24,7 +24,7 @@ namespace Client.Code.DefaultUri
 				{
 					options.Authority = "http://localhost:5000/";
 
-					options.ClientId = "Client.Code.DefaultUri";
+					options.ClientId = "Client.Code.CustomizeUri";
 					options.ResponseType = "code";
 
 					options.Scope.Add("openid");

@@ -51,7 +51,6 @@ namespace IdentityServer
 
                 //    RedirectUris =           { "http://localhost:5003/callback.html" },
                 //    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
-                //    AllowedCorsOrigins =     { "http://localhost:5003" },
 
                 //    AllowedScopes =
                 //    {
@@ -78,8 +77,6 @@ namespace IdentityServer
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowedScopes = { "openid", "profile", "email", "api" },
-
-                    //AllowedCorsOrigins =     { "http://localhost:5003" },
                 },
 
 
@@ -105,7 +102,6 @@ namespace IdentityServer
                         "http://localhost:5005/silent-callback-oidc",
                     },
                     PostLogoutRedirectUris = { "http://localhost:5005/" },
-                    //AllowedCorsOrigins =     { "http://localhost:5005" },
 
                     AllowedScopes =
                     {
@@ -138,8 +134,6 @@ namespace IdentityServer
                     },
                     PostLogoutRedirectUris = { "http://localhost:5005/" },
 
-                    //AllowedCorsOrigins = { "http://localhost:5005" },
-
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -161,13 +155,9 @@ namespace IdentityServer
                     RequireClientSecret = false,
 
                     RedirectUris = {
-                        "http://localhost:5005/signin-popup-oidc",
                         "http://localhost:5005/signin-callback-oidc",
-                        "http://localhost:5005/silent-callback-oidc",
-                        "http://localhost:5005/signout-popup-oidc",
                     },
-                    PostLogoutRedirectUris = { "http://localhost:5005/", "http://localhost:5005/signout-popup-oidc", },
-                    AllowedCorsOrigins = { "http://localhost:5005" },
+                    PostLogoutRedirectUris = { "http://localhost:5005/" },
 
                     AllowedScopes =
                     {
@@ -180,7 +170,7 @@ namespace IdentityServer
 
                 new Client
                 {
-                    ClientId = "Client.Code.DefaultUri",
+                    ClientId = "Client.Code.CustomizeUri",
                     ClientName = "Client With Grant Type Code using default callback Uris",
 
                     AllowedGrantTypes = GrantTypes.Code,
@@ -192,7 +182,6 @@ namespace IdentityServer
                         "http://localhost:5006/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/signin-popup-oidc.html",
                     },
                     PostLogoutRedirectUris = { "http://localhost:5006/" },
-                    AllowedCorsOrigins = { "http://localhost:5006" },
 
                     AllowedScopes =
                     {
@@ -219,7 +208,6 @@ namespace IdentityServer
                         "http://localhost:5002/silent-callback-oidc",
                     },
                     PostLogoutRedirectUris = { "http://localhost:5002/" },
-                    AllowedCorsOrigins = { "http://localhost:5002" },
 
                     AllowedScopes = new List<string>
                     {
@@ -249,8 +237,6 @@ namespace IdentityServer
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowedScopes = { "openid", "profile", "email", "api" },
-
-                    //AllowedCorsOrigins =     { "http://localhost:4200" },
                     
                 },
 
@@ -308,7 +294,6 @@ namespace IdentityServer
                     },
 
                     PostLogoutRedirectUris = { "http://localhost:7017/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:7017" },
 
                     AllowedScopes =
                     {

@@ -14,12 +14,10 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect.Models
 		public bool RevokeAccessTokenOnSignout { get; set; } = true;
 		public bool FilterProtocolClaims { get; set; } = true;
 		public string PopupWindowFeatures { get; set; } = "menubar=yes,location=yes,toolbar=yes,width=1200,height=800,left=100,top=100;resizable=yes";
-		public string SignedInCallbackUri { get; set; } //= "/signin-callback-oidc";
-		= "/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/signin-callback-oidc.html";
-		public string SilentRedirectUri { get; set; } //= "/silent-callback-oidc";
-		= "/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/silent-callback-oidc.html";
+		public string SignedInCallbackUri { get; set; } = "/signin-callback-oidc";
+		public string SilentRedirectUri { get; set; }
 		public string SignedOutRedirectUri { get; set; } = "/";
-		public string PopupRedirectUri { get; set; } = "/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/signin-popup-oidc.html";
-		public string PopupPostLogoutRedirectUri { get; set; } = "/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/signout-popup-oidc.html";
+		public string PopupRedirectUri { get; set; }
+		public string PopupPostLogoutRedirectUri { get; set; }
 	}
 }
