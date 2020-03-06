@@ -7,5 +7,6 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		Task LogInAsync();
 		Task LogOutAsync();
 		Task LogInPopupAsync();
+		Task LogOutPopupAsync();
 	}
 }

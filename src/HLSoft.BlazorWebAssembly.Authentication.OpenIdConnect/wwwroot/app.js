@@ -43,10 +43,10 @@
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.getUser = function () {
-		var result = mgr.getUser();
-		result.then(user => console.log(user));
-		return result;
-		//return mgr.getUser();
+		//var result = mgr.getUser();
+		//result.then(user => console.log(user));
+		//return result;
+		return mgr.getUser();
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signinPopup = function () {
@@ -59,7 +59,18 @@
 		});
 	}
 
-	// renew Token
+	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signoutPopup = function () {
+		var config = getConfigOidc();
+		config.post_logout_redirect_uri = config.popup_post_logout_redirect_uri;
+		return mgr.signoutPopup(config).then(() => {
+			//setTimeout(() => {
+			//	window.location.reload();
+			//});
+		}, error => {
+			console.error(error);
+		});
+	}
+
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signinSilent = function () {
 		return mgr.signinSilent();
 	}
@@ -95,7 +106,19 @@
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSigninPopup = function () {
 		var mgr = createUserManager();
 		mgr.signinPopupCallback().then(() => {
-			if (getParameterByName('error') && getParameterByName('state')) {
+			if (getParameterByName('error')) {
+				setTimeout(() => {
+					window.close();
+				});
+			}
+		});
+	}
+
+	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSignoutPopup = function () {
+		var mgr = createUserManager();
+		debugger;
+		mgr.signoutPopupCallback(true).then(() => {
+			if (getParameterByName('error')) {
 				setTimeout(() => {
 					window.close();
 				});

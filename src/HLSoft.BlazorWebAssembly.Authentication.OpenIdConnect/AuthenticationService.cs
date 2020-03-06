@@ -26,5 +26,10 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		{
 			await _jsRuntime.InvokeVoidAsync(Constants.SignoutRedirect);
 		}
+
+		public async Task LogOutPopupAsync()
+		{
+			await _jsRuntime.InvokeVoidAsync(Constants.SignoutPopup);
+		}
 	}
 }

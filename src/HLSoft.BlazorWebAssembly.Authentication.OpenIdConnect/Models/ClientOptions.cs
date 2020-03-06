@@ -10,6 +10,7 @@
 		public string scope { get; set; }
 		public string post_logout_redirect_uri { get; set; }
 		public string popup_redirect_uri { get; set; }
+		public string popup_post_logout_redirect_uri { get; set; }
 		public string popupWindowFeatures { get; set; }
 		public bool loadUserInfo { get; set; }
 		public bool automaticSilentRenew { get; set; }

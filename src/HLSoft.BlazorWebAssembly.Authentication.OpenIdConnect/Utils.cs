@@ -26,6 +26,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				scope = string.Join(" ", authOption.Scope.Distinct()),
 				post_logout_redirect_uri = GetAbsoluteUri(authOption.SignedOutRedirectUri, navigationManager),
 				popup_redirect_uri = GetAbsoluteUri(authOption.PopupRedirectUri, navigationManager),
+				popup_post_logout_redirect_uri = GetAbsoluteUri(authOption.PopupPostLogoutRedirectUri, navigationManager),
 				loadUserInfo = authOption.LoadUserInfo,
 				automaticSilentRenew = authOption.AutomaticSilentRenew,
 				monitorAnonymousSession = authOption.MonitorAnonymousSession,

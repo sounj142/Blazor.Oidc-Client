@@ -29,6 +29,7 @@ namespace Client.Code
 
 					options.PopupRedirectUri = "/signin-popup-oidc";
 					options.SignedInCallbackUri = "/signin-callback-oidc";
+					options.PopupPostLogoutRedirectUri = "/signout-popup-oidc";
 
 					options.Scope.Add("openid");
 					options.Scope.Add("profile");

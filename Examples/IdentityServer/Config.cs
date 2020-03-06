@@ -164,6 +164,7 @@ namespace IdentityServer
                         "http://localhost:5005/signin-popup-oidc",
                         "http://localhost:5005/signin-callback-oidc",
                         "http://localhost:5005/silent-callback-oidc",
+                        "http://localhost:5005/signout-popup-oidc",
                     },
                     PostLogoutRedirectUris = { "http://localhost:5005/" },
                     AllowedCorsOrigins = { "http://localhost:5005" },

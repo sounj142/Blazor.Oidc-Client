@@ -13,7 +13,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
             Action<OpenIdConnectOptions> configureOptions)
         {
             return services
-                .AddCommonServices(configureOptions)
+                .AddSharedServices(configureOptions)
                 .AddScoped<AuthenticationStateProvider, BlazorAuthenticationStateProvider<object>>()
                 .AddScoped<IClaimsParser<object>, DefaultClaimsParser>();
         }
@@ -24,12 +24,12 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
             where TUser : class
         {
             return services
-                .AddCommonServices(configureOptions)
+                .AddSharedServices(configureOptions)
                 .AddScoped<AuthenticationStateProvider, BlazorAuthenticationStateProvider<TUser>>()
                 .AddScoped<IClaimsParser<TUser>, TClaimsParser>();
         }
 
-        private static IServiceCollection AddCommonServices(this IServiceCollection services,
+        private static IServiceCollection AddSharedServices(this IServiceCollection services,
             Action<OpenIdConnectOptions> configureOptions)
         {
             services.Configure(configureOptions);
