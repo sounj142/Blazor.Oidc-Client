@@ -21,6 +21,12 @@
 		return decodeURIComponent(results[2].replace(/\+/g, ' '));
 	}
 
+	function handlePopupWindowClosedError(error) {
+		if (error.message != 'Popup window closed') {
+			console.error(error);
+		}
+	}
+
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.configOidc = function (config, overrideOldConfig) {
 		if (!mgr || overrideOldConfig) {
 			if (config && config.client_id) {
@@ -51,24 +57,16 @@
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signinPopup = function () {
 		return mgr.signinPopup().then(() => {
-			setTimeout(() => {
-				window.location.reload();
-			});
-		}, error => {
-			console.error(error);
-		});
+		}, handlePopupWindowClosedError);
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signoutPopup = function () {
 		var config = getConfigOidc();
 		config.post_logout_redirect_uri = config.popup_post_logout_redirect_uri;
-		return mgr.signoutPopup(config).then(() => {
-			//setTimeout(() => {
-			//	window.location.reload();
-			//});
-		}, error => {
-			console.error(error);
-		});
+		var mgr = new Oidc.UserManager(config);
+
+		return mgr.signoutPopup().then(() => {
+		}, handlePopupWindowClosedError);
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signinSilent = function () {
@@ -116,8 +114,7 @@
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSignoutPopup = function () {
 		var mgr = createUserManager();
-		debugger;
-		mgr.signoutPopupCallback(true).then(() => {
+		mgr.signoutPopupCallback(false).then(() => {
 			if (getParameterByName('error')) {
 				setTimeout(() => {
 					window.close();

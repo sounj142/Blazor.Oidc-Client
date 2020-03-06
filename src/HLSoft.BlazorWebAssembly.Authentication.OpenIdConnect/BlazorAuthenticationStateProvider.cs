@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
-	public class BlazorAuthenticationStateProvider<TUser> : AuthenticationStateProvider where TUser: class
+	public class BlazorAuthenticationStateProvider<TUser> : AuthenticationStateProvider, IAuthenticationStateProvider where TUser: class
 	{
 		private readonly IJSRuntime _jsRuntime;
 		private readonly ClientOptions _clientOptions;
@@ -65,6 +64,11 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				return true;
 			}
 			return false;
+		}
+
+		public void NotifyAuthenticationStateChanged()
+		{
+			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 		}
 	}
 }
