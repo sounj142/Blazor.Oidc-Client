@@ -13,6 +13,6 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		/// return true if current URI is one of special URIs for sign-in, sign-out
 		/// </summary>
 		/// <returns></returns>
-		bool CurrentUriIsUsedForAuthentication();
+		bool CurrentUriIsAuthenticationUri();
 	}
 }

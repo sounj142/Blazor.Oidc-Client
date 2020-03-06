@@ -85,7 +85,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 
 		public async Task RequireAuthenticationAsync()
 		{
-			if (!CurrentUriIsUsedForAuthentication())
+			if (!CurrentUriIsAuthenticationUri())
 			{
 				var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 				if (!authenticationState.User.Identity.IsAuthenticated)
@@ -96,7 +96,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			}
 		}
 
-		public bool CurrentUriIsUsedForAuthentication()
+		public bool CurrentUriIsAuthenticationUri()
 		{
 			return Utils.CurrentUriIs(_clientOptions.redirect_uri, _navigationManager) ||
 				Utils.CurrentUriIs(_clientOptions.silent_redirect_uri, _navigationManager) ||
