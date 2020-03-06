@@ -4,9 +4,9 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
 	public interface IAuthenticationService
 	{
-		Task LogInAsync();
-		Task LogOutAsync();
-		Task LogInPopupAsync();
-		Task LogOutPopupAsync();
+		Task SignInAsync();
+		Task SignOutAsync();
+		Task SignInPopupAsync();
+		Task SignOutPopupAsync();
 	}
 }

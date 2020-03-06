@@ -19,5 +19,6 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect.Models
 		public string SignedOutRedirectUri { get; set; } = "/";
 		public string PopupSignInRedirectUri { get; set; }
 		public string PopupSignOutRedirectUri { get; set; }
+		public bool WriteErrorToConsole { get; set; }
 	}
 }

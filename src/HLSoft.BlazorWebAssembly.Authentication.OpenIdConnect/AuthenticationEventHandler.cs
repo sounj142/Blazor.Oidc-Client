@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -6,33 +7,59 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
 	public class AuthenticationEventHandler
 	{
-		public event EventHandler LoginSuccessEvent;
-		public event EventHandler<string> LoginFailEvent;
-		public event EventHandler LogoutSuccessEvent;
-		public event EventHandler<string> LogoutFailEvent;
+		public event EventHandler<string> SignInFailEvent;
+		public event EventHandler<string> SignOutFailEvent;
+		public event EventHandler SignInSuccessEvent;
+		public event EventHandler SignOutSuccessEvent;
 
-		public void NotifyLoginFail(Exception err)
+		public readonly OpenIdConnectOptions _openIdConnectOptions;
+
+		public AuthenticationEventHandler(OpenIdConnectOptions openIdConnectOptions)
 		{
-			Task.Run(() =>
-			{
-				ProcessException(err, LoginFailEvent);
-			});
+			_openIdConnectOptions = openIdConnectOptions;
 		}
 
-		public void NotifyLogoutFail(Exception err)
+		public void NotifySignInFail(Exception err)
 		{
-			Task.Run(() =>
-			{
-				ProcessException(err, LogoutFailEvent);
-			});
+			ProcessFail(err, SignInFailEvent);
 		}
 
-		private void ProcessException(Exception err, EventHandler<string> eventHandler)
+		public void NotifySignOutFail(Exception err)
+		{
+			ProcessFail(err, SignOutFailEvent);
+		}
+
+		public void NotifySignInSuccess()
+		{
+			ProcessSuccess(SignInSuccessEvent);
+		}
+
+		public void NotifySignOutSuccess()
+		{
+			ProcessSuccess(SignOutSuccessEvent);
+		}
+
+		private void ProcessFail(Exception err, EventHandler<string> eventHandler)
 		{
 			var errorMsg = err.Message.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
 					.FirstOrDefault()
 					?.Trim();
-			eventHandler?.Invoke(this, errorMsg);
+			if (_openIdConnectOptions.WriteErrorToConsole)
+			{
+				Console.Error.WriteLine(err);
+			}
+			Task.Run(() =>
+			{
+				eventHandler?.Invoke(this, errorMsg);
+			});
+		}
+
+		private void ProcessSuccess(EventHandler eventHandler)
+		{
+			Task.Run(() =>
+			{
+				eventHandler?.Invoke(this, null);
+			});
 		}
 	}
 }

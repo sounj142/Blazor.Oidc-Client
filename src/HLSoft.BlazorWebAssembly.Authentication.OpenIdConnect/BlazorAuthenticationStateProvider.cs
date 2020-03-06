@@ -14,15 +14,18 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		private readonly ClientOptions _clientOptions;
 		private readonly NavigationManager _navigationManager;
 		private readonly IClaimsParser<TUser> _claimsParser;
+		private readonly AuthenticationEventHandler _authenticationEventHandler;
 
-		public BlazorAuthenticationStateProvider(IJSRuntime jsRuntime, NavigationManager myNavigationManager, 
-			ClientOptions clientOptions, IClaimsParser<TUser> claimsParser)
+
+		public BlazorAuthenticationStateProvider(IJSRuntime jsRuntime, NavigationManager navigationManager, 
+			ClientOptions clientOptions, IClaimsParser<TUser> claimsParser, AuthenticationEventHandler authenticationEventHandler)
 		{
 			Console.WriteLine("===========================BlazorAuthenticationStateProvider duoc tao ==========");
 			_jsRuntime = jsRuntime;
-			_navigationManager = myNavigationManager;
+			_navigationManager = navigationManager;
 			_clientOptions = clientOptions;
 			_claimsParser = claimsParser;
+			_authenticationEventHandler = authenticationEventHandler;
 		}
 
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -61,17 +64,19 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		{
 			if (CurrentUriIs(_clientOptions.redirect_uri))
 			{
-				string returnUrl = _clientOptions.post_logout_redirect_uri;
+				string returnUrl = null;
 				try
 				{
-					returnUrl = await _jsRuntime.InvokeAsync<string>(Constants.ProcessSigninCallback);
+					returnUrl = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "_returnUrl");
+					await _jsRuntime.InvokeVoidAsync("sessionStorage.removeItem", "_returnUrl");
+					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninCallback);
 				}
-				catch (Exception e)
+				catch (Exception err)
 				{
-					Console.Error.WriteLine(e);
+					_authenticationEventHandler.NotifySignInFail(err);
 				}
 
-				_navigationManager.NavigateTo(returnUrl, true);
+				_navigationManager.NavigateTo(returnUrl ?? _clientOptions.post_logout_redirect_uri, true);
 				return true;
 			}
 			return false;
@@ -103,9 +108,9 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninPopup);
 					await _jsRuntime.InvokeVoidAsync("window.close");
 				}
-				catch (Exception e)
+				catch (Exception err)
 				{
-					Console.Error.WriteLine(e);
+					_authenticationEventHandler.NotifySignInFail(err);
 				}
 				return true;
 			}
@@ -121,9 +126,9 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSignoutPopup);
 					await _jsRuntime.InvokeVoidAsync("window.close");
 				}
-				catch (Exception e)
+				catch (Exception err)
 				{
-					Console.Error.WriteLine(e);
+					_authenticationEventHandler.NotifySignOutFail(err);
 				}
 				return true;
 			}
