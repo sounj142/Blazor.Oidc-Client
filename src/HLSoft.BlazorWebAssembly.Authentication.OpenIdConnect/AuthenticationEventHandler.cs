@@ -9,6 +9,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 	{
 		public event EventHandler<string> SignInFailEvent;
 		public event EventHandler<string> SignOutFailEvent;
+		public event EventHandler<string> SilentRefreshTokenFailEvent;
 		public event EventHandler SignInSuccessEvent;
 		public event EventHandler SignOutSuccessEvent;
 
@@ -27,6 +28,11 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		public void NotifySignOutFail(Exception err)
 		{
 			ProcessFail(err, SignOutFailEvent);
+		}
+
+		public void NotifySilentRefreshTokenFail(Exception err)
+		{
+			ProcessFail(err, SilentRefreshTokenFailEvent);
 		}
 
 		public void NotifySignInSuccess()

@@ -20,7 +20,6 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		public BlazorAuthenticationStateProvider(IJSRuntime jsRuntime, NavigationManager navigationManager, 
 			ClientOptions clientOptions, IClaimsParser<TUser> claimsParser, AuthenticationEventHandler authenticationEventHandler)
 		{
-			Console.WriteLine("===========================BlazorAuthenticationStateProvider duoc tao ==========");
 			_jsRuntime = jsRuntime;
 			_navigationManager = navigationManager;
 			_clientOptions = clientOptions;
@@ -90,9 +89,9 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				{
 					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSilentCallback);
 				}
-				catch (Exception e)
+				catch (Exception err)
 				{
-					Console.Error.WriteLine(e);
+					_authenticationEventHandler.NotifySilentRefreshTokenFail(err);
 				}
 				return true;
 			}
