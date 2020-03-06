@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect;
 
-namespace Client.Code.CustomizeUri
+namespace Client.Implicit.UsePopup
 {
 	public class Program
     {
@@ -24,12 +24,12 @@ namespace Client.Code.CustomizeUri
 				{
 					options.Authority = "http://localhost:5000/";
 
-					options.ClientId = "Client.Code.CustomizeUri";
-					options.ResponseType = "code";
+					options.ClientId = "Client.Implicit.UsePopup";
+					options.ResponseType = "token id_token";
 
-					options.SignedInCallbackUri = "/fantastic-url-for-redirect";
-					options.PopupSignInRedirectUri = "/wonderful-link-for-popup-login";
-					options.PopupSignOutRedirectUri = "/sign-out-popup-here";
+					options.SignedInCallbackUri = null;
+					options.PopupSignInRedirectUri = "/signin-popup-oidc";
+					options.PopupSignOutRedirectUri = "/signout-popup-oidc";
 
 					options.Scope.Add("openid");
 					options.Scope.Add("profile");

@@ -61,10 +61,6 @@
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signoutPopup = function () {
-		var config = getConfigOidc();
-		config.post_logout_redirect_uri = config.popup_post_logout_redirect_uri;
-		var mgr = new Oidc.UserManager(config);
-
 		return mgr.signoutPopup().then(() => {
 		}, handlePopupWindowClosedError);
 	}

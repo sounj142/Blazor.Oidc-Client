@@ -39,47 +39,6 @@ namespace IdentityServer
         public static IEnumerable<Client> Clients =>
             new List<Client>
             {
-
-                //// JavaScript Client
-                //new Client
-                //{
-                //    ClientId = "js",
-                //    ClientName = "JavaScript Client",
-                //    AllowedGrantTypes = GrantTypes.Code,
-                //    RequirePkce = true,
-                //    RequireClientSecret = false,
-
-                //    RedirectUris =           { "http://localhost:5003/callback.html" },
-                //    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
-
-                //    AllowedScopes =
-                //    {
-                //        IdentityServerConstants.StandardScopes.OpenId,
-                //        IdentityServerConstants.StandardScopes.Profile,
-                //        "api"
-                //    },
-
-                //    //AllowOfflineAccess = true,
-                //    //AccessTokenLifetime = 12,
-                //},
-
-                // JavaScript Client
-                new Client
-                {
-                    ClientId = "js",
-                    ClientName = "js Client",
-                    AllowAccessTokensViaBrowser = true,
-                    RequireConsent = false,
-
-                    RedirectUris = { "http://localhost:5003/callback.html", "http://localhost:5003/silent-callback.html" },
-                    PostLogoutRedirectUris = { "http://localhost:5003/" },
-                    //FrontChannelLogoutUri = "http://localhost:5003/silent-callback.html", // for testing identityserver on localhost
-
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowedScopes = { "openid", "profile", "email", "api" },
-                },
-
-
                 // JavaScript Client
                 new Client
                 {
@@ -170,6 +129,30 @@ namespace IdentityServer
 
                 new Client
                 {
+                    ClientId = "Client.Implicit.UsePopup",
+                    ClientName = "Client.Implicit.UsePopup",
+
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    RequireClientSecret = false,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = {
+                        "http://localhost:5003/signin-popup-oidc",
+                        "http://localhost:5003/signout-popup-oidc",
+                    },
+                    PostLogoutRedirectUris = { "http://localhost:5003/", "http://localhost:5003/signout-popup-oidc" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "api"
+                    }
+                },
+
+                new Client
+                {
                     ClientId = "Client.Code.CustomizeUri",
                     ClientName = "Client With Grant Type Code using default callback Uris",
 
@@ -177,11 +160,11 @@ namespace IdentityServer
                     RequireClientSecret = false,
 
                     RedirectUris = {
-                        "http://localhost:5006/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/signin-callback-oidc.html",
-                        "http://localhost:5006/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/silent-callback-oidc.html",
-                        "http://localhost:5006/_content/HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect/signin-popup-oidc.html",
+                        "http://localhost:5006/fantastic-url-for-redirect",
+                        "http://localhost:5006/wonderful-link-for-popup-login",
+                        "http://localhost:5006/sign-out-popup-here",
                     },
-                    PostLogoutRedirectUris = { "http://localhost:5006/" },
+                    PostLogoutRedirectUris = { "http://localhost:5006/", "http://localhost:5006/sign-out-popup-here" },
 
                     AllowedScopes =
                     {

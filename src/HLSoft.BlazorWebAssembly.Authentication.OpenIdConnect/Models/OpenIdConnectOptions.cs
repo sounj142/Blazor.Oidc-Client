@@ -17,7 +17,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect.Models
 		public string SignedInCallbackUri { get; set; } = "/signin-callback-oidc";
 		public string SilentRedirectUri { get; set; }
 		public string SignedOutRedirectUri { get; set; } = "/";
-		public string PopupRedirectUri { get; set; }
-		public string PopupPostLogoutRedirectUri { get; set; }
+		public string PopupSignInRedirectUri { get; set; }
+		public string PopupSignOutRedirectUri { get; set; }
 	}
 }

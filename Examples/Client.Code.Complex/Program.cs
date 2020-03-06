@@ -39,7 +39,7 @@ namespace Client.Code.Complex
 
 				options.AutomaticSilentRenew = true;
 
-				options.PopupRedirectUri = "/signin-popup-oidc";
+				options.PopupSignInRedirectUri = "/signin-popup-oidc";
 				options.SignedInCallbackUri = "/signin-callback-oidc";
 				options.SilentRedirectUri = "/silent-callback-oidc";
 
