@@ -34,7 +34,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			await Utils.ConfigOidcAsync(_jsRuntime, _clientOptions);
 
 			var user = await _jsRuntime.InvokeAsync<TUser>(Constants.GetUser);
-			Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(user));
+			//Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(user));
 
 			var claimsIdentity = _claimsParser.CreateIdentity(user);
 
