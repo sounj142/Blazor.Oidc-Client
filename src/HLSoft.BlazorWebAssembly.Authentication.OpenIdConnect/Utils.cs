@@ -9,12 +9,12 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
 	internal static class Utils
 	{
-		internal static ValueTask ConfigOidcAsync(IJSRuntime jsRuntime, ClientOptions clientOptions, bool overrideOldConfig = false)
+		public static ValueTask ConfigOidcAsync(IJSRuntime jsRuntime, ClientOptions clientOptions, bool overrideOldConfig = false)
 		{
 			return jsRuntime.InvokeVoidAsync(Constants.ConfigOidc, clientOptions, overrideOldConfig);
 		}
 
-		internal static ClientOptions CreateClientOptionsConfigData(OpenIdConnectOptions authOption, NavigationManager navigationManager)
+		public static ClientOptions CreateClientOptionsConfigData(OpenIdConnectOptions authOption, NavigationManager navigationManager)
 		{
 			return new ClientOptions
 			{
@@ -46,6 +46,11 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		public static async Task SetSessionStorageData(IJSRuntime jsRuntime, string name, string value)
 		{
 			await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", name, value);
+		}
+
+		public static bool CurrentUriIs(string url, NavigationManager navigationManager)
+		{
+			return !string.IsNullOrWhiteSpace(url) && navigationManager.Uri.StartsWith(url, StringComparison.OrdinalIgnoreCase);
 		}
 
 		private static string GetAbsoluteUri(string uri, NavigationManager navigationManager)

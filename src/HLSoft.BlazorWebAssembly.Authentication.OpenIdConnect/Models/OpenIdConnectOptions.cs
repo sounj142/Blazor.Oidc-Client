@@ -14,11 +14,12 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect.Models
 		public bool RevokeAccessTokenOnSignout { get; set; } = true;
 		public bool FilterProtocolClaims { get; set; } = true;
 		public string PopupWindowFeatures { get; set; } = "menubar=yes,location=yes,toolbar=yes,width=1200,height=800,left=100,top=100;resizable=yes";
+		public bool WriteErrorToConsole { get; set; }
+		public string SignedOutRedirectUri { get; set; } = "/";
+
 		public string SignedInCallbackUri { get; set; } = "/signin-callback-oidc";
 		public string SilentRedirectUri { get; set; }
-		public string SignedOutRedirectUri { get; set; } = "/";
 		public string PopupSignInRedirectUri { get; set; }
 		public string PopupSignOutRedirectUri { get; set; }
-		public bool WriteErrorToConsole { get; set; }
 	}
 }

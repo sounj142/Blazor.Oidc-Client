@@ -76,7 +76,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 
 		private async Task<bool> HandleSigninCallbackUri()
 		{
-			if (CurrentUriIs(_clientOptions.redirect_uri))
+			if (Utils.CurrentUriIs(_clientOptions.redirect_uri, _navigationManager))
 			{
 				string returnUrl = null;
 				try
@@ -99,7 +99,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 
 		private async Task<bool> HandleSilentCallbackUri()
 		{
-			if (CurrentUriIs(_clientOptions.silent_redirect_uri))
+			if (Utils.CurrentUriIs(_clientOptions.silent_redirect_uri, _navigationManager))
 			{
 				try
 				{
@@ -117,7 +117,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 
 		private async Task<bool> HandleSigninPopupUri()
 		{
-			if (CurrentUriIs(_clientOptions.popup_redirect_uri))
+			if (Utils.CurrentUriIs(_clientOptions.popup_redirect_uri, _navigationManager))
 			{
 				try
 				{
@@ -135,7 +135,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 
 		private async Task<bool> HandleSignoutPopupUri()
 		{
-			if (CurrentUriIs(_clientOptions.popup_post_logout_redirect_uri))
+			if (Utils.CurrentUriIs(_clientOptions.popup_post_logout_redirect_uri, _navigationManager))
 			{
 				try
 				{
@@ -149,11 +149,6 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				return true;
 			}
 			return false;
-		}
-
-		private bool CurrentUriIs(string url)
-		{
-			return !string.IsNullOrEmpty(url) && _navigationManager.Uri.StartsWith(url, StringComparison.OrdinalIgnoreCase);
-		}
+		} 
 	}
 }

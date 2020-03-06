@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Linq;
@@ -12,14 +13,20 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		private readonly IAuthenticationStateProvider _authenticationStateProvider;
 		private readonly AuthenticationEventHandler _authenticationEventHandler;
 		private readonly NavigationManager _navigationManager;
+		private readonly ClientOptions _clientOptions;
 
-		public AuthenticationService(IJSRuntime jsRuntime, IAuthenticationStateProvider authenticationStateProvider,
-			AuthenticationEventHandler authenticationEventHandler, NavigationManager navigationManager)
+		public AuthenticationService(
+			IJSRuntime jsRuntime,
+			IAuthenticationStateProvider authenticationStateProvider,
+			AuthenticationEventHandler authenticationEventHandler, 
+			NavigationManager navigationManager, 
+			ClientOptions clientOptions)
 		{
 			_jsRuntime = jsRuntime;
 			_authenticationStateProvider = authenticationStateProvider;
 			_authenticationEventHandler = authenticationEventHandler;
 			_navigationManager = navigationManager;
+			_clientOptions = clientOptions;
 		}
 
 		public async Task SignInAsync()
@@ -74,6 +81,27 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				_authenticationEventHandler.NotifySignOutFail(err);
 			}
 			_authenticationStateProvider.NotifyAuthenticationStateChanged();
+		}
+
+		public async Task RequireAuthenticationAsync()
+		{
+			if (!CurrentUriIsUsedForAuthentication())
+			{
+				var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+				if (!authenticationState.User.Identity.IsAuthenticated)
+				{
+					Console.WriteLine("-- Bat dang nhap ne {0}", _navigationManager.Uri);
+					await SignInAsync();
+				}
+			}
+		}
+
+		public bool CurrentUriIsUsedForAuthentication()
+		{
+			return Utils.CurrentUriIs(_clientOptions.redirect_uri, _navigationManager) ||
+				Utils.CurrentUriIs(_clientOptions.silent_redirect_uri, _navigationManager) ||
+				Utils.CurrentUriIs(_clientOptions.popup_redirect_uri, _navigationManager) ||
+				Utils.CurrentUriIs(_clientOptions.popup_post_logout_redirect_uri, _navigationManager);
 		}
 	}
 }
