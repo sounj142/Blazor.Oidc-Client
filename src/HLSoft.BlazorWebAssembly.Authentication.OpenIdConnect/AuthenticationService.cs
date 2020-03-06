@@ -9,11 +9,14 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 	{
 		private readonly IJSRuntime _jsRuntime;
 		private readonly IAuthenticationStateProvider _authenticationStateProvider;
+		private readonly AuthenticationEventHandler _authenticationEventHandler;
 
-		public AuthenticationService(IJSRuntime jsRuntime, IAuthenticationStateProvider authenticationStateProvider)
+		public AuthenticationService(IJSRuntime jsRuntime, IAuthenticationStateProvider authenticationStateProvider,
+			AuthenticationEventHandler authenticationEventHandler)
 		{
 			_jsRuntime = jsRuntime;
 			_authenticationStateProvider = authenticationStateProvider;
+			_authenticationEventHandler = authenticationEventHandler;
 		}
 
 		public async Task LogInAsync()
@@ -24,7 +27,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			}
 			catch (Exception err)
 			{
-				WriteErrorToConsole(err);
+				_authenticationEventHandler.NotifyLoginFail(err);
 			}
 		}
 		
@@ -36,7 +39,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			}
 			catch (Exception err)
 			{
-				WriteErrorToConsole(err);
+				_authenticationEventHandler.NotifyLoginFail(err);
 			}
 			_authenticationStateProvider.NotifyAuthenticationStateChanged();
 		}
@@ -49,7 +52,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			}
 			catch (Exception err)
 			{
-				WriteErrorToConsole(err);
+				_authenticationEventHandler.NotifyLogoutFail(err);
 			}
 		}
 
@@ -61,17 +64,9 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			}
 			catch (Exception err)
 			{
-				WriteErrorToConsole(err);
+				_authenticationEventHandler.NotifyLogoutFail(err);
 			}
 			_authenticationStateProvider.NotifyAuthenticationStateChanged();
-		}
-
-		private void WriteErrorToConsole(Exception err)
-		{
-			var errorMsg = err.Message.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-					.FirstOrDefault()
-					?.Trim();
-			Console.WriteLine("Error: {0}", errorMsg);
 		}
 	}
 }

@@ -42,6 +42,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
                 return Utils.CreateClientOptionsConfigData(authOptions, navigationManager);
             });
             return services.AddScoped<IAuthenticationService, AuthenticationService>()
+                .AddSingleton<AuthenticationEventHandler>()
                 .AddScoped(resolver => resolver.GetService<AuthenticationStateProvider>() as IAuthenticationStateProvider);
         }
     }
