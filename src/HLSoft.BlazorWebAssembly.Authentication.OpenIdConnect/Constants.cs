@@ -14,5 +14,7 @@
 		public const string ProcessSignoutPopup = JavascriptPrefix + "processSignoutPopup";
 		public const string SigninPopup = JavascriptPrefix + "signinPopup";
 		public const string SignoutPopup = JavascriptPrefix + "signoutPopup";
+		public const string SignedInSuccess = "1";
+		public const string SignedOutSuccess = "2";
 	}
 }

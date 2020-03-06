@@ -29,6 +29,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 		{
+			await ProcessPreviousActionCode();
 			if (await HandleKnownUri())
 			{
 				return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
@@ -59,6 +60,20 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			return false;
 		}
 
+		private async Task ProcessPreviousActionCode()
+		{
+			var previousActionCode = await Utils.GetAndRemoveSessionStorageData(_jsRuntime, "_previousActionCode");
+			switch (previousActionCode)
+			{
+				case Constants.SignedInSuccess:
+					_authenticationEventHandler.NotifySignInSuccess();
+					break;
+				case Constants.SignedOutSuccess:
+					_authenticationEventHandler.NotifySignOutSuccess();
+					break;
+			}
+		}
+
 		private async Task<bool> HandleSigninCallbackUri()
 		{
 			if (CurrentUriIs(_clientOptions.redirect_uri))
@@ -66,8 +81,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				string returnUrl = null;
 				try
 				{
-					returnUrl = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "_returnUrl");
-					await _jsRuntime.InvokeVoidAsync("sessionStorage.removeItem", "_returnUrl");
+					returnUrl = await Utils.GetAndRemoveSessionStorageData(_jsRuntime, "_returnUrl");
 					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninCallback);
 				}
 				catch (Exception err)
@@ -75,7 +89,9 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 					_authenticationEventHandler.NotifySignInFail(err);
 				}
 
+				await Utils.SetSessionStorageData(_jsRuntime, "_previousActionCode", Constants.SignedInSuccess);
 				_navigationManager.NavigateTo(returnUrl ?? _clientOptions.post_logout_redirect_uri, true);
+
 				return true;
 			}
 			return false;
@@ -88,6 +104,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				try
 				{
 					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSilentCallback);
+					_authenticationEventHandler.NotifySilentRefreshTokenSuccess();
 				}
 				catch (Exception err)
 				{

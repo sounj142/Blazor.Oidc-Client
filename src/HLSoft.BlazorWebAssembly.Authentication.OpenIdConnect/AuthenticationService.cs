@@ -26,7 +26,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		{
 			try
 			{
-				await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "_returnUrl", _navigationManager.Uri);
+				await Utils.SetSessionStorageData(_jsRuntime, "_returnUrl", _navigationManager.Uri);
 				await _jsRuntime.InvokeVoidAsync(Constants.SigninRedirect);
 			}
 			catch (Exception err)
@@ -40,6 +40,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			try
 			{
 				await _jsRuntime.InvokeVoidAsync(Constants.SigninPopup);
+				_authenticationEventHandler.NotifySignInSuccess();
 			}
 			catch (Exception err)
 			{
@@ -53,6 +54,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			try
 			{
 				await _jsRuntime.InvokeVoidAsync(Constants.SignoutRedirect);
+				await Utils.SetSessionStorageData(_jsRuntime, "_previousActionCode", Constants.SignedOutSuccess);
 			}
 			catch (Exception err)
 			{
@@ -65,6 +67,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			try
 			{
 				await _jsRuntime.InvokeVoidAsync(Constants.SignoutPopup);
+				_authenticationEventHandler.NotifySignOutSuccess();
 			}
 			catch (Exception err)
 			{
