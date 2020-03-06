@@ -1,4 +1,6 @@
 ﻿@inject IAuthenticationService authenticationService
+@inject AuthenticationEventHandler authenticationEventHandler
+@inject IMatToaster Toaster
 
 <CascadingAuthenticationState>
     @if (!isAuthenticationLink)
@@ -18,6 +20,7 @@
             </NotFound>
         </Router>
     }
+    <MatToastContainer />
 </CascadingAuthenticationState>
 
 @code  {
@@ -26,5 +29,29 @@
     protected override void OnInitialized()
     {
         isAuthenticationLink = authenticationService.CurrentUriIsAuthenticationUri();
+
+        authenticationEventHandler.SignInSuccessEvent += (obj, e) => {
+            Toaster.Add("Sign in success!", MatToastType.Success);
+        };
+
+        authenticationEventHandler.SignOutSuccessEvent += (obj, e) => {
+            Toaster.Add("Sign out success!", MatToastType.Success);
+        };
+
+        authenticationEventHandler.SilentRefreshTokenSuccessEvent += (obj, e) => {
+            Toaster.Add("Silently refreshing token success!", MatToastType.Success);
+        };
+
+        authenticationEventHandler.SignInFailEvent += (obj, e) => {
+            Toaster.Add("Sign in fail!", MatToastType.Danger);
+        };
+
+        authenticationEventHandler.SignOutFailEvent += (obj, e) => {
+            Toaster.Add("Sign out fail!", MatToastType.Danger);
+        };
+
+        authenticationEventHandler.SilentRefreshTokenFailEvent += (obj, e) => {
+            Toaster.Add("Silently refreshing token fail!", MatToastType.Danger);
+        };
     }
 }

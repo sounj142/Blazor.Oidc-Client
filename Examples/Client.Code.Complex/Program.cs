@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect;
 using Client.Code.Complex.Auth;
 using Microsoft.AspNetCore.Authorization;
+using MatBlazor;
 
 namespace Client.Code.Complex
 {
@@ -21,16 +22,19 @@ namespace Client.Code.Complex
 
 		public static void ConfigureServices(IServiceCollection services)
 		{
-			services.AddAuthorizationCore(options => {
+			services.AddAuthorizationCore(options =>
+			{
 				options.AddPolicy(
 					Policies.CanManageWeatherForecast,
 					new AuthorizationPolicyBuilder()
 						.RequireAuthenticatedUser()
 						.RequireClaim("api_role", "Admin")
 						.Build());
-			})
-			//.AddBlazoredOpenIdConnect(options => // switch to this line to use default ClaimsParser
-			.AddBlazoredOpenIdConnect<User, CustomClaimsParser>(options => // note: don't use this config with External Google/IdentityServer, the User class is not compatible with claims from these source
+			});
+
+
+			//services.AddBlazoredOpenIdConnect(options => // switch to this line to use default ClaimsParser
+			services.AddBlazoredOpenIdConnect<User, CustomClaimsParser>(options => // note: don't use this config with External Google/IdentityServer, the User class is not compatible with claims from these source
 			{
 				options.Authority = "http://localhost:5000/";
 
@@ -43,6 +47,8 @@ namespace Client.Code.Complex
 				options.SignedInCallbackUri = "/signin-callback-oidc";
 				options.SilentRedirectUri = "/silent-callback-oidc";
 
+				options.WriteErrorToConsole = true;
+
 				options.Scope.Add("openid");
 				options.Scope.Add("profile");
 				options.Scope.Add("email");
@@ -50,6 +56,16 @@ namespace Client.Code.Complex
 				options.Scope.Add("api_role");
 				options.Scope.Add("api");
 				options.Scope.Add("offline_access");
+			});
+
+			services.AddMatToaster(config =>
+			{
+				config.Position = MatToastPosition.BottomRight;
+				config.PreventDuplicates = true;
+				config.NewestOnTop = true;
+				config.ShowCloseButton = true;
+				config.MaximumOpacity = 95;
+				config.VisibleStateDuration = 3000;
 			});
 		}
 	}
