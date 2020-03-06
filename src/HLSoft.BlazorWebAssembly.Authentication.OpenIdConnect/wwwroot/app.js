@@ -1,30 +1,24 @@
 ﻿(function () {
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect = {};
-	var mgr = null;
+	let mgr = null;
 
 	function setConfigOidc(config) {
 		sessionStorage.setItem('_configOidc', JSON.stringify(config));
 	}
 
 	function getConfigOidc() {
-		var str = sessionStorage.getItem('_configOidc');
+		let str = sessionStorage.getItem('_configOidc');
 		return str ? JSON.parse(str) : null;
 	}
 
 	function getParameterByName(name, url) {
 		if (!url) url = window.location.href;
 		name = name.replace(/[\[\]]/g, '\\$&');
-		var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+		let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
 			results = regex.exec(url);
 		if (!results) return null;
 		if (!results[2]) return '';
 		return decodeURIComponent(results[2].replace(/\+/g, ' '));
-	}
-
-	function handlePopupWindowClosedError(error) {
-		if (error.message != 'Popup window closed') {
-			console.error(error);
-		}
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.configOidc = function (config, overrideOldConfig) {
@@ -49,20 +43,18 @@
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.getUser = function () {
-		//var result = mgr.getUser();
+		//let result = mgr.getUser();
 		//result.then(user => console.log(user));
 		//return result;
 		return mgr.getUser();
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signinPopup = function () {
-		return mgr.signinPopup().then(() => {
-		}, handlePopupWindowClosedError);
+		return mgr.signinPopup();
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signoutPopup = function () {
-		return mgr.signoutPopup().then(() => {
-		}, handlePopupWindowClosedError);
+		return mgr.signoutPopup();
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signinSilent = function () {
@@ -76,46 +68,24 @@
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSigninCallback = function () {
-		var mgr = createUserManager();
-		var returnUrl = sessionStorage.getItem('_returnUrl') || '/';
+		let mgr = createUserManager();
+		let returnUrl = sessionStorage.getItem('_returnUrl');
 		sessionStorage.removeItem('_returnUrl');
-
-		mgr.signinRedirectCallback().then(() => {
-			window.history.replaceState({}, window.document.title, window.location.origin + window.location.pathname);
-			window.location = returnUrl;
-		}, error => {
-			console.error(error);
-			window.location = returnUrl;
-		});
+		return mgr.signinRedirectCallback().then(() => returnUrl);
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSilentCallback = function () {
-		var mgr = createUserManager();
-		
-		mgr.signinSilentCallback('/').catch(error => {
-			console.error(error);
-		});
+		let mgr = createUserManager();
+		return mgr.signinSilentCallback('/');
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSigninPopup = function () {
-		var mgr = createUserManager();
-		mgr.signinPopupCallback().then(() => {
-			if (getParameterByName('error')) {
-				setTimeout(() => {
-					window.close();
-				});
-			}
-		});
+		let mgr = createUserManager();
+		return mgr.signinPopupCallback();
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSignoutPopup = function () {
-		var mgr = createUserManager();
-		mgr.signoutPopupCallback(false).then(() => {
-			if (getParameterByName('error')) {
-				setTimeout(() => {
-					window.close();
-				});
-			}
-		});
+		let mgr = createUserManager();
+		mgr.signoutPopupCallback(false);
 	}
 })();

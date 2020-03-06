@@ -18,6 +18,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		public BlazorAuthenticationStateProvider(IJSRuntime jsRuntime, NavigationManager myNavigationManager, 
 			ClientOptions clientOptions, IClaimsParser<TUser> claimsParser)
 		{
+			Console.WriteLine("===========================BlazorAuthenticationStateProvider duoc tao ==========");
 			_jsRuntime = jsRuntime;
 			_navigationManager = myNavigationManager;
 			_clientOptions = clientOptions;
@@ -48,24 +49,82 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 
 		private async Task<bool> HandleKnownUri()
 		{
+			if (await HandleSigninCallbackUri()) return true;
+			if (await HandleSilentCallbackUri()) return true;
+			if (await HandleSigninPopupUri()) return true;
+			if (await HandleSignoutPopupUri()) return true;
+
+			return false;
+		}
+
+		private async Task<bool> HandleSigninCallbackUri()
+		{
 			if (CurrentUriIs(_clientOptions.redirect_uri))
 			{
-				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninCallback);
+				string returnUrl = _clientOptions.post_logout_redirect_uri;
+				try
+				{
+					returnUrl = await _jsRuntime.InvokeAsync<string>(Constants.ProcessSigninCallback);
+				}
+				catch (Exception e)
+				{
+					Console.Error.WriteLine(e);
+				}
+
+				_navigationManager.NavigateTo(returnUrl, true);
 				return true;
 			}
+			return false;
+		}
+
+		private async Task<bool> HandleSilentCallbackUri()
+		{
 			if (CurrentUriIs(_clientOptions.silent_redirect_uri))
 			{
-				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSilentCallback);
+				try
+				{
+					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSilentCallback);
+				}
+				catch (Exception e)
+				{
+					Console.Error.WriteLine(e);
+				}
 				return true;
 			}
+			return false;
+		}
+
+		private async Task<bool> HandleSigninPopupUri()
+		{
 			if (CurrentUriIs(_clientOptions.popup_redirect_uri))
 			{
-				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninPopup);
+				try
+				{
+					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSigninPopup);
+					await _jsRuntime.InvokeVoidAsync("window.close");
+				}
+				catch (Exception e)
+				{
+					Console.Error.WriteLine(e);
+				}
 				return true;
 			}
+			return false;
+		}
+
+		private async Task<bool> HandleSignoutPopupUri()
+		{
 			if (CurrentUriIs(_clientOptions.popup_post_logout_redirect_uri))
 			{
-				await _jsRuntime.InvokeVoidAsync(Constants.ProcessSignoutPopup);
+				try
+				{
+					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSignoutPopup);
+					await _jsRuntime.InvokeVoidAsync("window.close");
+				}
+				catch (Exception e)
+				{
+					Console.Error.WriteLine(e);
+				}
 				return true;
 			}
 			return false;

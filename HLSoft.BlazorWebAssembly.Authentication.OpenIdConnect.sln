@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Code.CustomizeUri", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Implicit.UsePopup", "Examples\Client.Implicit.UsePopup\Client.Implicit.UsePopup.csproj", "{62B17910-FE3C-4D27-857D-07771C52F664}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Implicit.RequiredLogin", "Examples\Client.Implicit.RequiredLogin\Client.Implicit.RequiredLogin.csproj", "{14467785-D6BE-438C-A5BC-8DA50F845568}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{62B17910-FE3C-4D27-857D-07771C52F664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62B17910-FE3C-4D27-857D-07771C52F664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62B17910-FE3C-4D27-857D-07771C52F664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14467785-D6BE-438C-A5BC-8DA50F845568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14467785-D6BE-438C-A5BC-8DA50F845568}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14467785-D6BE-438C-A5BC-8DA50F845568}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14467785-D6BE-438C-A5BC-8DA50F845568}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{562AB1E4-85A5-45A3-82A8-64205CCEAEFB} = {2F56E931-05AF-4BE5-BA27-C6867D69AB0F}
 		{7336744B-A809-4EE1-9032-32C151098C53} = {2F56E931-05AF-4BE5-BA27-C6867D69AB0F}
 		{62B17910-FE3C-4D27-857D-07771C52F664} = {2F56E931-05AF-4BE5-BA27-C6867D69AB0F}
+		{14467785-D6BE-438C-A5BC-8DA50F845568} = {2F56E931-05AF-4BE5-BA27-C6867D69AB0F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9AF2427A-D1D9-41F2-9E2D-0363A55E0D21}

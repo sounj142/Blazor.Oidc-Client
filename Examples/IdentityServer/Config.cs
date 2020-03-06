@@ -42,7 +42,7 @@ namespace IdentityServer
                 new Client
                 {
                     ClientId = "Client.Code",
-                    ClientName = "Client With Grant Type Code",
+                    ClientName = "Client.Code",
 
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
@@ -74,7 +74,10 @@ namespace IdentityServer
                         "http://localhost:5003/signin-popup-oidc",
                         "http://localhost:5003/signout-popup-oidc",
                     },
-                    PostLogoutRedirectUris = { "http://localhost:5003/", "http://localhost:5003/signout-popup-oidc" },
+                    PostLogoutRedirectUris = { 
+                        "http://localhost:5003/", 
+                        "http://localhost:5003/signout-popup-oidc" 
+                    },
 
                     AllowedScopes =
                     {
@@ -88,7 +91,7 @@ namespace IdentityServer
                 new Client
                 {
                     ClientId = "Client.Code.CustomizeUri",
-                    ClientName = "Client With Grant Type Code using default callback Uris",
+                    ClientName = "Client.Code.CustomizeUri",
 
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
@@ -98,7 +101,10 @@ namespace IdentityServer
                         "http://localhost:5006/wonderful-link-for-popup-login",
                         "http://localhost:5006/sign-out-popup-here",
                     },
-                    PostLogoutRedirectUris = { "http://localhost:5006/", "http://localhost:5006/sign-out-popup-here" },
+                    PostLogoutRedirectUris = { 
+                        "http://localhost:5006/", 
+                        "http://localhost:5006/sign-out-popup-here" 
+                    },
 
                     AllowedScopes =
                     {
@@ -112,7 +118,7 @@ namespace IdentityServer
                 new Client
                 {
                     ClientId = "Client.Code.Complex",
-                    ClientName = "A more complex example with variety claims, custom ClaimParser, automatic renew, ect.",
+                    ClientName = "Client.Code.Complex",
 
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
@@ -140,7 +146,28 @@ namespace IdentityServer
                     AccessTokenLifetime = 100,
                 },
 
+                new Client
+                {
+                    ClientId = "Client.Implicit.RequiredLogin",
+                    ClientName = "Client.Implicit.RequiredLogin",
 
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireClientSecret = false,
+
+                    RedirectUris = {
+                        "http://localhost:5004/signin-callback-oidc",
+                    },
+                    PostLogoutRedirectUris = { "http://localhost:5004/" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "api"
+                    }
+                },
         };
     }
 }
