@@ -23,9 +23,8 @@
 @code  {
     private bool isAuthenticationLink = false;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await authenticationService.RequireAuthenticationAsync();
         isAuthenticationLink = authenticationService.CurrentUriIsAuthenticationUri();
     }
 }
