@@ -67,8 +67,8 @@
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSilentCallback = function () {
-		let mgr = createUserManager();
-		return mgr.signinSilentCallback('/');
+		let mgr = new Oidc.UserManager({});
+		return mgr.signinSilentCallback(window.location.href);
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.processSigninPopup = function () {
