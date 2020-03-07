@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
-	internal class AuthenticationService : IAuthenticationService
+    internal class AuthenticationService : IAuthenticationService
 	{
 		private readonly IJSRuntime _jsRuntime;
 		private readonly IAuthenticationStateProvider _authenticationStateProvider;

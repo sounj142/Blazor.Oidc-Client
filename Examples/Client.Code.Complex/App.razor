@@ -38,16 +38,16 @@
             Toaster.Add("Sign out success!", MatToastType.Success);
         };
 
-        authenticationEventHandler.SignInFailEvent += (obj, e) => {
-            Toaster.Add("Sign in fail!", MatToastType.Danger);
+        authenticationEventHandler.SignInFailEvent += (obj, str) => {
+            Toaster.Add($"Sign in fail! Error: {str}", MatToastType.Danger);
         };
 
-        authenticationEventHandler.SignOutFailEvent += (obj, e) => {
-            Toaster.Add("Sign out fail!", MatToastType.Danger);
+        authenticationEventHandler.SignOutFailEvent += (obj, str) => {
+            Toaster.Add($"Sign out fail! Error: {str}", MatToastType.Danger);
         };
 
-        authenticationEventHandler.SilentRefreshTokenFailEvent += (obj, e) => {
-            Toaster.Add("Silently refreshing token fail!", MatToastType.Danger);
+        authenticationEventHandler.SilentRefreshTokenFailEvent += (obj, str) => {
+            Toaster.Add($"Silently refreshing token fail! Error: {str}", MatToastType.Danger);
         };
     }
 }

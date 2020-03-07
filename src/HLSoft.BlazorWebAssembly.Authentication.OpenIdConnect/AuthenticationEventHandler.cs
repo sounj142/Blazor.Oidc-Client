@@ -18,6 +18,8 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		public AuthenticationEventHandler(OpenIdConnectOptions openIdConnectOptions)
 		{
 			_openIdConnectOptions = openIdConnectOptions;
+
+			DotNetEndPoint.Initialize(this);
 		}
 
 		public void NotifySignInFail(Exception err)

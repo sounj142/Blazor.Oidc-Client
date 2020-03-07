@@ -16,7 +16,6 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		private readonly IClaimsParser<TUser> _claimsParser;
 		private readonly AuthenticationEventHandler _authenticationEventHandler;
 
-
 		public BlazorAuthenticationStateProvider(IJSRuntime jsRuntime, NavigationManager navigationManager, 
 			ClientOptions clientOptions, IClaimsParser<TUser> claimsParser, AuthenticationEventHandler authenticationEventHandler)
 		{

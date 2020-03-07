@@ -14,8 +14,8 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
         {
             return services
                 .AddSharedServices(configureOptions)
-                .AddScoped<AuthenticationStateProvider, BlazorAuthenticationStateProvider<object>>()
-                .AddScoped<IClaimsParser<object>, DefaultClaimsParser>();
+                .AddSingleton<AuthenticationStateProvider, BlazorAuthenticationStateProvider<object>>()
+                .AddSingleton<IClaimsParser<object>, DefaultClaimsParser>();
         }
 
         public static IServiceCollection AddBlazoredOpenIdConnect<TUser, TClaimsParser>(this IServiceCollection services,
@@ -25,8 +25,8 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
         {
             return services
                 .AddSharedServices(configureOptions)
-                .AddScoped<AuthenticationStateProvider, BlazorAuthenticationStateProvider<TUser>>()
-                .AddScoped<IClaimsParser<TUser>, TClaimsParser>();
+                .AddSingleton<AuthenticationStateProvider, BlazorAuthenticationStateProvider<TUser>>()
+                .AddSingleton<IClaimsParser<TUser>, TClaimsParser>();
         }
 
         private static IServiceCollection AddSharedServices(this IServiceCollection services,
@@ -41,9 +41,9 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
                 var navigationManager = resolver.GetRequiredService<NavigationManager>();
                 return Utils.CreateClientOptionsConfigData(authOptions, navigationManager);
             });
-            return services.AddScoped<IAuthenticationService, AuthenticationService>()
+            return services.AddSingleton<IAuthenticationService, AuthenticationService>()
                 .AddSingleton<AuthenticationEventHandler>()
-                .AddScoped(resolver => resolver.GetService<AuthenticationStateProvider>() as IAuthenticationStateProvider);
+                .AddSingleton(resolver => resolver.GetService<AuthenticationStateProvider>() as IAuthenticationStateProvider);
         }
     }
 }

@@ -12,6 +12,11 @@
 		return decodeURIComponent(results[2].replace(/\+/g, ' '));
 	}
 
+	function notifySilentRenewError(err) {
+		console.log('notifySilentRenewError', err);
+		DotNet.invokeMethodAsync('HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect', 'NotifySilentRefreshTokenFail', err);
+	}
+
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.configOidc = function (config) {
 		if (!mgr) {
 			if (config && config.client_id) {
@@ -22,6 +27,7 @@
 				config = str ? JSON.parse(str) : null;
 			}
 			mgr = new Oidc.UserManager(config);
+			mgr._events.addSilentRenewError(notifySilentRenewError);
 		}
 	}
 
