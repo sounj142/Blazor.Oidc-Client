@@ -39,13 +39,18 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 		public static async Task<string> GetAndRemoveSessionStorageData(IJSRuntime jsRuntime, string name)
 		{
 			var returnUrl = await jsRuntime.InvokeAsync<string>("sessionStorage.getItem", name);
-			await jsRuntime.InvokeVoidAsync("sessionStorage.removeItem", name);
+			await RemoveSessionStorageData(jsRuntime, name);
 			return returnUrl;
 		}
 
 		public static async Task SetSessionStorageData(IJSRuntime jsRuntime, string name, string value)
 		{
 			await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", name, value);
+		}
+
+		public static async Task RemoveSessionStorageData(IJSRuntime jsRuntime, string name)
+		{
+			await jsRuntime.InvokeVoidAsync("sessionStorage.removeItem", name);
 		}
 
 		public static bool CurrentUriIs(string url, NavigationManager navigationManager)

@@ -73,6 +73,7 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 			try
 			{
 				await _jsRuntime.InvokeVoidAsync(Constants.SignoutPopup);
+				await Utils.RemoveSessionStorageData(_jsRuntime, Constants.OidcUserStorageName);
 				_authenticationEventHandler.NotifySignOutSuccess();
 			}
 			catch (Exception err)
@@ -89,7 +90,6 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 				if (!authenticationState.User.Identity.IsAuthenticated)
 				{
-					Console.WriteLine("-- Bat dang nhap ne {0}", _navigationManager.Uri);
 					await SignInAsync();
 				}
 			}
