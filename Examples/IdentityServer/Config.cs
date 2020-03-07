@@ -142,7 +142,7 @@ namespace IdentityServer
                         "api",
                     },
                     AllowOfflineAccess = true,
-                    AccessTokenLifetime = 100,
+                    AccessTokenLifetime = 50,
                 },
 
                 new Client

@@ -12,8 +12,8 @@
 		return decodeURIComponent(results[2].replace(/\+/g, ' '));
 	}
 
-	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.configOidc = function (config, overrideOldConfig) {
-		if (!mgr || overrideOldConfig) {
+	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.configOidc = function (config) {
+		if (!mgr) {
 			if (config && config.client_id) {
 				sessionStorage.setItem('_configOidc', JSON.stringify(config));
 			}

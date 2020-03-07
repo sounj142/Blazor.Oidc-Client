@@ -104,7 +104,6 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				try
 				{
 					await _jsRuntime.InvokeVoidAsync(Constants.ProcessSilentCallback);
-					_authenticationEventHandler.NotifySilentRefreshTokenSuccess();
 				}
 				catch (Exception err)
 				{

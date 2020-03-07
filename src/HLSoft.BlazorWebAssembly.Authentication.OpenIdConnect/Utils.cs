@@ -9,9 +9,9 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
 	internal static class Utils
 	{
-		public static ValueTask ConfigOidcAsync(IJSRuntime jsRuntime, ClientOptions clientOptions, bool overrideOldConfig = false)
+		public static ValueTask ConfigOidcAsync(IJSRuntime jsRuntime, ClientOptions clientOptions)
 		{
-			return jsRuntime.InvokeVoidAsync(Constants.ConfigOidc, clientOptions, overrideOldConfig);
+			return jsRuntime.InvokeVoidAsync(Constants.ConfigOidc, clientOptions);
 		}
 
 		public static ClientOptions CreateClientOptionsConfigData(OpenIdConnectOptions authOption, NavigationManager navigationManager)
