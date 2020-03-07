@@ -1,7 +1,5 @@
 ﻿@page "/fetchdata"
-@inject HttpClient Http
-@using System.Net.Http.Headers
-@inject AuthenticationStateProvider authenticationStateProvider
+@inject IAuthenticationStateProvider authenticationStateProvider
 @attribute [Authorize]
 
 <h1>
@@ -43,30 +41,22 @@ else
 }
 
 @code {
-	private WeatherForecast[] forecasts;
+    private WeatherForecast[] forecasts;
 
-	protected override async Task OnInitializedAsync()
-	{
-		var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
-		if (authState.User.Identity.IsAuthenticated)
-		{
-			var token = authState.User.Claims.FirstOrDefault(x => x.Type == "access_token");
-			if (token != null)
-			{
-				Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
-				forecasts = await Http.GetJsonAsync<WeatherForecast[]>("http://localhost:5001/WeatherForecast");
-			}
-		}
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = await authenticationStateProvider.GetHttpClientAsync();
+        forecasts = await httpClient.GetJsonAsync<WeatherForecast[]>("http://localhost:5001/WeatherForecast");
+    }
 
-	public class WeatherForecast
-	{
-		public DateTime Date { get; set; }
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
 
-		public int TemperatureC { get; set; }
+        public int TemperatureC { get; set; }
 
-		public string Summary { get; set; }
+        public string Summary { get; set; }
 
-		public int TemperatureF { get; set; }
-	}
+        public int TemperatureF { get; set; }
+    }
 }

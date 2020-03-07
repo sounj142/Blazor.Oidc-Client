@@ -1,7 +1,5 @@
 ﻿@page "/add-weather-forecast"
-@inject HttpClient Http
-@using System.Net.Http.Headers
-@inject AuthenticationStateProvider authenticationStateProvider
+@inject IAuthenticationStateProvider authenticationStateProvider
 @inject NavigationManager navigationManager
 @attribute [Authorize(Policy = Policies.CanManageWeatherForecast)]
 
@@ -32,23 +30,8 @@
 
     private async Task HandleValidSubmit()
     {
-        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
-        if (authState.User.Identity.IsAuthenticated)
-        {
-            var token = authState.User.Claims.FirstOrDefault(x => x.Type == "access_token");
-            if (token != null)
-            {
-                Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
-                try
-                {
-                    await Http.PostJsonAsync<bool>("http://localhost:5001/WeatherForecast", _model);
-                    navigationManager.NavigateTo("/fetchdata");
-                }
-                catch (Exception err)
-                {
-                    Console.WriteLine("Error: {0}", err);
-                }
-            }
-        }
+        var httpClient = await authenticationStateProvider.GetHttpClientAsync();
+        await httpClient.PostJsonAsync<bool>("http://localhost:5001/WeatherForecast", _model);
+        navigationManager.NavigateTo("/fetchdata");
     }
 }

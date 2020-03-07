@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -12,35 +15,48 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 	{
 		private readonly IJSRuntime _jsRuntime;
 		private readonly ClientOptions _clientOptions;
+		private readonly HttpClient _httpClient;
 		private readonly NavigationManager _navigationManager;
 		private readonly IClaimsParser<TUser> _claimsParser;
 		private readonly AuthenticationEventHandler _authenticationEventHandler;
+		private bool _initialized = false;
 
-		public BlazorAuthenticationStateProvider(IJSRuntime jsRuntime, NavigationManager navigationManager, 
-			ClientOptions clientOptions, IClaimsParser<TUser> claimsParser, AuthenticationEventHandler authenticationEventHandler)
+		public BlazorAuthenticationStateProvider(
+			IJSRuntime jsRuntime, 
+			NavigationManager navigationManager, 
+			ClientOptions clientOptions, 
+			IClaimsParser<TUser> claimsParser, 
+			AuthenticationEventHandler authenticationEventHandler,
+			HttpClient httpClient)
 		{
 			_jsRuntime = jsRuntime;
 			_navigationManager = navigationManager;
 			_clientOptions = clientOptions;
 			_claimsParser = claimsParser;
 			_authenticationEventHandler = authenticationEventHandler;
+			_httpClient = httpClient;
+		}
+
+		public async Task InitializeAuthenticationData()
+		{
+			await ProcessPreviousActionCode();
+			if (!await HandleKnownUri())
+			{
+				await Utils.ConfigOidcAsync(_jsRuntime, _clientOptions);
+			}
 		}
 
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 		{
-			await ProcessPreviousActionCode();
-			if (await HandleKnownUri())
+			if (!_initialized)
 			{
-				return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+				await InitializeAuthenticationData();
+				_initialized = true;
 			}
-
-			await Utils.ConfigOidcAsync(_jsRuntime, _clientOptions);
 
 			var user = await _jsRuntime.InvokeAsync<TUser>(Constants.GetUser);
 			//Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(user));
-
 			var claimsIdentity = _claimsParser.CreateIdentity(user);
-
 			return new AuthenticationState(new ClaimsPrincipal(claimsIdentity));
 		}
 
@@ -147,6 +163,21 @@ namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 				return true;
 			}
 			return false;
-		} 
+		}
+
+		public async Task<HttpClient> GetHttpClientAsync(string tokenName = "access_token")
+		{
+			var authState = await GetAuthenticationStateAsync();
+			_httpClient.DefaultRequestHeaders.Authorization = null;
+			if (authState.User.Identity.IsAuthenticated)
+			{
+				var token = authState.User.Claims.FirstOrDefault(x => x.Type == tokenName);
+				if (!string.IsNullOrEmpty(token?.Value))
+				{
+					_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
+				}
+			}
+			return _httpClient;
+		}
 	}
 }

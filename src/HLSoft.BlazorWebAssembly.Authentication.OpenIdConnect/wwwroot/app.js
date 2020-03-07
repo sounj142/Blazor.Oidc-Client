@@ -39,7 +39,7 @@
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.getUser = function () {
-		return mgr.getUser();
+		return mgr ? mgr.getUser() : null;
 	}
 
 	window.HLSoftBlazorWebAssemblyAuthenticationOpenIdConnect.signinPopup = function () {
