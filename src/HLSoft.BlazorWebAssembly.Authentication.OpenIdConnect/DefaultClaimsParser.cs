@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect
 {
-	internal class DefaultClaimsParser : IClaimsParser<object>
+	public class DefaultClaimsParser : IClaimsParser<object>
     {
 		private const int MAXIMUM_READ_CLAIM_LEVEL = 3;
 

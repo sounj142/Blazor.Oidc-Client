@@ -13,7 +13,6 @@
 	}
 
 	function notifySilentRenewError(err) {
-		console.log('notifySilentRenewError', err);
 		DotNet.invokeMethodAsync('HLSoft.BlazorWebAssembly.Authentication.OpenIdConnect', 'NotifySilentRefreshTokenFail', err);
 	}
 
